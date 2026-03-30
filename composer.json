@@ -1,0 +1,47 @@
+{
+  "name": "fr8train/skeleton-ms",
+  "description": "Skeleton MicroService powered by Slim4 Framework.",
+  "type": "project",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "slim",
+    "fr8train"
+  ],
+  "authors": [
+    {
+      "name": "Tyler Collette",
+      "email": "tyler.collette@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.3",
+    "slim/slim": "^4.15",
+    "vlucas/phpdotenv": "^5.6",
+    "slim/psr7": "^1.8",
+    "php-di/php-di": "^7.1",
+    "nesbot/carbon": "^3.11",
+    "guzzlehttp/guzzle": "^7.10",
+    "monolog/monolog": "^3.9",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "sorskod/db": "^1.1",
+    "ramsey/uuid": "^4.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "app/",
+      "config\\": "config/",
+      "exceptions\\": "exceptions/",
+      "middleware\\": "app/middleware/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "composer dump-autoload"
+    ]
+  }
+}
