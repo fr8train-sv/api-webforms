@@ -1,21 +1,21 @@
 {
-  "name": "fr8train/skeleton-ms",
-  "description": "Skeleton MicroService powered by Slim4 Framework.",
+  "name": "fr8train-sv/api-webforms",
+  "description": "Collection of one-off methods to handle webform submissions for Stellar Virtual",
   "type": "project",
   "license": "MIT",
   "keywords": [
     "php",
     "slim",
-    "fr8train"
+    "fr8train-sv"
   ],
   "authors": [
     {
       "name": "Tyler Collette",
-      "email": "tyler.collette@gmail.com"
+      "email": "t.collette@stellarvirtual.org"
     }
   ],
   "require": {
-    "php": ">=8.3",
+    "php": ">=8.4",
     "slim/slim": "^4.15",
     "vlucas/phpdotenv": "^5.6",
     "slim/psr7": "^1.8",
