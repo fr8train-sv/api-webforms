@@ -40,22 +40,48 @@ SQL;
         # SAVE ALL DATA TO APP DB
         try {
             $sql = <<<SQL
-insert into webforms.health_assessment (student_index, 
-                                        email, 
-                                        firstname, 
-                                        lastname, 
-                                        weight, 
-                                        height_feet, 
-                                        height_inches,
-                                        one_mile_run_minutes, 
-                                        one_mile_run_seconds, 
-                                        curl_ups, 
-                                        trunk_lift, 
-                                        push_ups,
-                                        shoulder_stretch_left, 
-                                        shoulder_stretch_right, 
-                                        assessment_date)
-values (:studentIndex, :email, :firstname, :lastname, :weight, :heightFeet, :heightInches, :oneMileRunMinutes, :oneMileRunSeconds, :curlUps, :trunkLift, :pushUps, :shoulderStretchLeft, :shoulderStretchRight, :assessmentDate)
+merge into webforms.health_assessment as target
+using (select :studentIndex as StudentIndex,
+              :email as Email,
+              :firstname as FirstName,
+              :lastname as LastName,
+              :weight as Weight,
+              :heightFeet as HeightFeet,
+              :heightInches as HeightInches,
+              :oneMileRunMinutes as OneMileRunMinutes,
+              :oneMileRunSeconds as OneMileRunSeconds,
+              :curlUps as CurlUps,
+              :trunkLift as TrunkLift,
+              :pushUps as PushUps,
+              :shoulderStretchLeft as ShoulderStretchLeft,
+              :shoulderStretchRight as ShouldStretchRight,
+              :assessmentDate as AssessmentDate) as src
+on target.email = src.Email
+when matched then
+    update
+    set target.student_index          = coalesce(src.StudentIndex, target.student_index),
+        target.firstname              = src.FirstName,
+        target.lastname               = src.LastName,
+        target.weight                 = src.Weight,
+        target.height_feet            = src.HeightFeet,
+        target.height_inches          = src.HeightInches,
+        target.one_mile_run_minutes   = src.OneMileRunMinutes,
+        target.one_mile_run_seconds   = src.OneMileRunSeconds,
+        target.curl_ups               = src.CurlUps,
+        target.trunk_lift             = src.TrunkLift,
+        target.push_ups               = src.PushUps,
+        target.shoulder_stretch_left  = src.ShoulderStretchLeft,
+        target.shoulder_stretch_right = src.ShouldStretchRight,
+        target.assessment_date        = src.AssessmentDate,
+        target.updated_at             = sysutcdatetime()
+when not matched then
+    insert (student_index, email, firstname, lastname, weight, height_feet, height_inches, one_mile_run_minutes,
+            one_mile_run_seconds, curl_ups, trunk_lift, push_ups, shoulder_stretch_left, shoulder_stretch_right,
+            assessment_date)
+    values (src.StudentIndex, src.Email, src.FirstName, src.LastName, src.Weight, src.HeightFeet,
+            src.HeightInches, src.OneMileRunMinutes, src.OneMileRunSeconds, src.CurlUps,
+            src.TrunkLift, src.PushUps, src.ShoulderStretchLeft, src.ShouldStretchRight,
+            src.AssessmentDate);
 SQL;
             $stmt = $this->appDB->prepare($sql);
             $studentIndexValue = $studentIndex ?: null;
