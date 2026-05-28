@@ -3,8 +3,8 @@
 namespace config;
 
 use controllers\BaseController;
+use controllers\CourseSelectionController;
 use controllers\HealthFormController;
-use controllers\HelloWorldController;
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,5 +22,9 @@ class Routes
         });
 
         $app->post('/healthform', HealthFormController::class.':post');
+
+        $app->post('/submissions', CourseSelectionController::class.':queryPriorSubmission');
+        $app->post('/submission', CourseSelectionController::class.':storeSubmission');
+        $app->post('/student', CourseSelectionController::class.':fetchStudent');
     }
 }
